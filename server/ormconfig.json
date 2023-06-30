@@ -1,0 +1,8 @@
+{
+  "type": "postgres",
+  "host": "localhost",
+  "port": 5432,
+  "user": "docker",
+  "password": "docker",
+  "database": "clinica_mais_saude"
+}
