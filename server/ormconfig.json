@@ -2,7 +2,11 @@
   "type": "postgres",
   "host": "localhost",
   "port": 5432,
-  "user": "docker",
+  "username": "postgres",
   "password": "docker",
-  "database": "clinica_mais_saude"
+  "database": "clinica_de_saude_health",
+  "migrations": ["./src/database/migrations/*.ts"],
+  "cli": {
+    "migrationsDir": "./src/database/migrations"
+  }
 }
