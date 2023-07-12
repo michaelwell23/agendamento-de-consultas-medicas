@@ -14,7 +14,6 @@ sessionRouter.post('/', async (request, response) => {
       email,
       password,
     });
-
     delete user.password;
 
     return response.status(202).json({ user, token });
