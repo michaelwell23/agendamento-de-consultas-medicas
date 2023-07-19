@@ -8,11 +8,6 @@ export const Container = styled.div`
 
   display: flex;
   align-items: stretch;
-
-  img {
-    width: 320px;
-    margin-top: 80px;
-  }
 `;
 
 export const Content = styled.div`
@@ -24,6 +19,11 @@ export const Content = styled.div`
 
   width: 100%;
   max-width: 700px;
+
+  img {
+    width: 260px;
+    height: 134px;
+  }
 
   form {
     margin: 80px 0;
@@ -53,7 +53,7 @@ export const Content = styled.div`
 
     color: #94de5e;
     display: block;
-    margin-top: 24px;
+    margin-top: 0px;
     text-decoration: none;
     transition: background-color 0.5s;
 

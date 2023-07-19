@@ -8,10 +8,6 @@ export const Container = styled.div`
 
   display: flex;
   align-items: stretch;
-
-  img {
-    width: 320px;
-  }
 `;
 
 export const Content = styled.div`
@@ -23,6 +19,11 @@ export const Content = styled.div`
 
   width: 100%;
   max-width: 700px;
+
+  img {
+    width: 260px;
+    height: 134px;
+  }
 
   form {
     margin: 80px 0;
