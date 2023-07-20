@@ -21,24 +21,6 @@ class User {
   cpf: string;
 
   @Column()
-  dateOfBirth: Date;
-
-  @Column()
-  gender: string;
-
-  @Column()
-  address: string;
-
-  @Column()
-  city: string;
-
-  @Column()
-  state: string;
-
-  @Column()
-  phone: string;
-
-  @Column()
   email: string;
 
   @Column()
