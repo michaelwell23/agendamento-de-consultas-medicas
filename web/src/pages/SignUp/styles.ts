@@ -1,7 +1,19 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { shade } from 'polished';
 
 import signUpBackground from '../../assets/sign-up-background.jpg';
+
+const appearFromRight = keyframes`
+  from {
+    opacity: 0;
+    transform: translateX(100px)
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0)
+  }
+`;
 
 export const Container = styled.div`
   height: 100vh;
@@ -11,11 +23,10 @@ export const Container = styled.div`
 `;
 
 export const Content = styled.div`
+  place-content: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  place-content: center;
 
   width: 100%;
   max-width: 700px;
@@ -24,9 +35,26 @@ export const Content = styled.div`
     width: 260px;
     height: 134px;
   }
+`;
+
+export const Background = styled.div`
+  flex: 1;
+  background: url(${signUpBackground}) no-repeat center;
+  background-size: cover;
+  filter: grayscale(1);
+
+  animation: ${appearFromRight} 1s;
+`;
+
+export const AnimationContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  animation: ${appearFromRight} 1.2s;
 
   form {
-    margin: 80px 0;
+    margin: 40px 0;
     width: 340px;
     text-align: center;
 
@@ -37,7 +65,7 @@ export const Content = styled.div`
     > a {
       color: #f4ede8;
       display: block;
-      margin-top: 24px;
+      margin-top: 15px;
       text-decoration: none;
       transition: background-color 0.5s;
 
@@ -53,7 +81,7 @@ export const Content = styled.div`
 
     color: #94de5e;
     display: block;
-    margin-top: 0px;
+    margin-top: 24px;
     text-decoration: none;
     transition: background-color 0.5s;
 
@@ -65,11 +93,4 @@ export const Content = styled.div`
       color: ${shade(0.2, '#94de5e')};
     }
   }
-`;
-
-export const Background = styled.div`
-  flex: 1;
-  background: url(${signUpBackground}) no-repeat center;
-  background-size: cover;
-  filter: grayscale(1);
 `;
