@@ -1,5 +1,5 @@
 /* eslint-disable import/extensions */
-import React, { useRef } from 'react';
+import React, { useRef, useCallback } from 'react';
 import {
   Image,
   KeyboardAvoidingView,
@@ -7,6 +7,7 @@ import {
   ScrollView,
   TextInput,
   View,
+  Alert,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 
@@ -14,12 +15,25 @@ import { useNavigation } from '@react-navigation/native';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/mobile';
 
+import * as Yup from 'yup';
+
+import api from '../../services/api';
+
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 
 import logoImg from '../../assets/logo.png';
 
+import getValidationError from '../../utils/getValidationErrors';
+
 import { Container, Title, BackToSignIn, BackToSignInText } from './styles';
+
+interface signUpFormData {
+  fullname: string;
+  cpf: string;
+  email: string;
+  password: string;
+}
 
 const SignUp: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
@@ -28,6 +42,50 @@ const SignUp: React.FC = () => {
   const cpfInputRef = useRef<TextInput>(null);
   const emailInputRef = useRef<TextInput>(null);
   const passwordInputRef = useRef<TextInput>(null);
+
+  const handleSignUp = useCallback(
+    async (data: signUpFormData) => {
+      try {
+        formRef.current?.setErrors({});
+
+        const schema = Yup.object().shape({
+          fullName: Yup.string().required('Nome Completo obrigatório!'),
+          cpf: Yup.string().required('CPF obrigatório!'),
+          email: Yup.string()
+            .required('E-mail obrigatório!')
+            .email('Digite email válido'),
+          password: Yup.string().min(6, 'No mínimo 6 digitos'),
+        });
+
+        await schema.validate(data, {
+          abortEarly: false,
+        });
+
+        await api.post('/users', data);
+
+        Alert.alert(
+          'Cadastro realizado com sucesso!',
+          'Você já pode realizar o seu login',
+        );
+
+        navigation.goBack();
+      } catch (err) {
+        if (err instanceof Yup.ValidationError) {
+          const errors = getValidationError(err);
+
+          formRef.current?.setErrors(errors);
+
+          return;
+        }
+
+        Alert.alert(
+          'Erro no cadastro',
+          'Ocorreu um erro ao fazer cadastro, tente novamente',
+        );
+      }
+    },
+    [navigation],
+  );
 
   return (
     <>
@@ -47,15 +105,10 @@ const SignUp: React.FC = () => {
               <Title>Crie sua conta</Title>
             </View>
 
-            <Form
-              ref={formRef}
-              onSubmit={(data) => {
-                console.log(data);
-              }}
-            >
+            <Form ref={formRef} onSubmit={handleSignUp}>
               <Input
                 autoCapitalize="words"
-                name="Name"
+                name="fullName"
                 icon="user"
                 placeholder="Nome Completo"
                 returnKeyType="next"
@@ -66,7 +119,6 @@ const SignUp: React.FC = () => {
               <Input
                 ref={cpfInputRef}
                 name="cpf"
-                keyboardType="numeric"
                 icon="credit-card"
                 placeholder="CPF"
                 returnKeyType="next"
@@ -76,10 +128,10 @@ const SignUp: React.FC = () => {
               />
               <Input
                 ref={emailInputRef}
+                name="email"
                 keyboardType="email-address"
                 autoCorrect={false}
                 autoCapitalize="none"
-                name="email"
                 icon="mail"
                 placeholder="E-mail"
                 returnKeyType="next"
