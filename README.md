@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img alt="haitatsu" title="Haitatsu" src="./web/src/assets/logo.png" width="400px" />
+  <img alt="haitatsu" title="Haitatsu" src="https://raw.githubusercontent.com/michaelwell23/agendamento-de-consultas-medicas/master/mobile/src/assets/logo%403x.png" width="400px" />
 </h1>
 
 ---

@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img alt="+Clinica" title="+Clinica" src="../web/src/assets/logo.png" width="400px" />
+  <img alt="+Clinica" title="+Clinica" src="https://raw.githubusercontent.com/michaelwell23/agendamento-de-consultas-medicas/master/mobile/src/assets/logo%403x.png" width="400px" />
 </h1>
 
 Backend da aplicação, desenvolvido com Node e [Express](https://github.com/expressjs/express), nos padrões REST API.
@@ -26,6 +26,11 @@ Backend da aplicação, desenvolvido com Node e [Express](https://github.com/exp
 - Postgres
 - MongoDB
 - Redis
+
+### Arquitetura e DDD:
+
+- DDD - É uma modelagem de software cujo objetivo é facilitar a implementação de regras e processos complexos, onde visa a divisão de responsabilidades por camadas e é independente da tecnologia utilizada.
+- TDD - Trata-se de uma prática de desenvolvimento de software onde a codificação das funcionalidades começa a partir da escrita de testes unitários
 
 ### Ferramentas utilizadas no ambiente de desenvolvimento:
 
