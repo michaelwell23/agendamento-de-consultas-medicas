@@ -20,7 +20,7 @@ import Button from '../../components/Button';
 
 import { Container, Content, Background, AnimationContainer } from './styles';
 
-interface SigInFormData {
+interface SignInFormData {
   email: string;
   password: string;
 }
@@ -33,7 +33,7 @@ const SignIn: React.FC = () => {
   const { addToast } = useToast();
 
   const handleSubmit = useCallback(
-    async (data: SigInFormData) => {
+    async (data: SignInFormData) => {
       try {
         formRef.current?.setErrors({});
 
