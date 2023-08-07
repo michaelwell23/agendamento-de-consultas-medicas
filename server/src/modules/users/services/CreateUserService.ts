@@ -1,32 +1,21 @@
 import { getRepository } from 'typeorm';
-
-import User from '../models/User';
 import { hash } from 'bcryptjs';
 
-import AppError from '../errors/AppError';
+import User from '@modules/users/infra/typeorm/entities/User';
+
+import AppError from '@shared/errors/AppError';
+
 interface Request {
-  fullName: String;
-  cpf: String;
-  dateOfBirth: Date;
-  gender: String;
-  address: String;
-  city: String;
-  state: String;
-  phone: String;
-  email: String;
-  password: String;
+  fullName: string;
+  cpf: string;
+  email: string;
+  password: string;
 }
 
 class CreateUserService {
   public async execute({
     fullName,
     cpf,
-    dateOfBirth,
-    gender,
-    address,
-    city,
-    state,
-    phone,
     email,
     password,
   }: Request): Promise<User> {
@@ -45,12 +34,6 @@ class CreateUserService {
     const user = userRespository.create({
       fullName,
       cpf,
-      dateOfBirth,
-      gender,
-      address,
-      city,
-      state,
-      phone,
       email,
       password: hashPassword,
     });

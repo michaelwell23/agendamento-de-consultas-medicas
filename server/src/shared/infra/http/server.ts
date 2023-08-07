@@ -4,11 +4,12 @@ import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 
 import 'express-async-errors';
-import routes from './routes';
 
-import './database';
-import upload from './config/uploads';
-import AppError from './errors/AppError';
+import upload from '@config/uploads';
+import AppError from '@shared/errors/AppError';
+import routes from './routes/index.routes';
+
+import '@shared/infra/typeorm';
 
 const app = express();
 

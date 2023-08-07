@@ -1,11 +1,11 @@
 import { getRepository } from 'typeorm';
 import { compare } from 'bcryptjs';
-
-import User from '../models/User';
 import { sign } from 'jsonwebtoken';
 
-import authConfig from '../config/auth';
-import AppError from '../errors/AppError';
+import User from '@modules/users/infra/typeorm/entities/User';
+
+import authConfig from '@config/auth';
+import AppError from '@shared/errors/AppError';
 
 interface Request {
   email: string;
@@ -37,7 +37,7 @@ class AuthenticateUserService {
 
     const token = sign({}, secret, {
       subject: user.id,
-      expiresIn: expiresIn,
+      expiresIn,
     });
 
     return {
