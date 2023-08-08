@@ -7,9 +7,9 @@ import 'express-async-errors';
 
 import upload from '@config/uploads';
 import AppError from '@shared/errors/AppError';
-import routes from './routes/index.routes';
-
 import '@shared/infra/typeorm';
+
+import routes from './routes/index.routes';
 
 const app = express();
 
@@ -27,8 +27,6 @@ app.use(
         message: err.message,
       });
     }
-
-    console.log(err);
 
     return response.status(500).json({
       status: 'error',
