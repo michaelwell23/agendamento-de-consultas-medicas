@@ -21,7 +21,7 @@
     "nodemailer": "^6.4.16",
     "pg": "^8.1.0",
     "reflect-metadata": "^0.1.13",
-    "tsyringe": "^4.4.0",
+    "tsyringe": "^4.8.0",
     "typeorm": "^0.2.24",
     "uuidv4": "^6.0.8"
   },
