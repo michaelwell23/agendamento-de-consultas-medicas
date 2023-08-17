@@ -27,10 +27,10 @@ Backend da aplicação, desenvolvido com Node e [Express](https://github.com/exp
 - MongoDB
 - Redis
 
-### Arquitetura e DDD:
+### Arquitetura e Testes:
 
 - DDD - É uma modelagem de software cujo objetivo é facilitar a implementação de regras e processos complexos, onde visa a divisão de responsabilidades por camadas e é independente da tecnologia utilizada.
-- TDD - Trata-se de uma prática de desenvolvimento de software onde a codificação das funcionalidades começa a partir da escrita de testes unitários
+- TDD - Trata-se de uma prática de desenvolvimento de software onde a codificação das funcionalidades começa a partir da escrita de testes unitários.
 
 ### Ferramentas utilizadas no ambiente de desenvolvimento:
 
