@@ -1,23 +1,25 @@
 import AppError from '@shared/errors/AppError';
-import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
 
+import FakeUserRepository from '@modules/users/repositories/fakes/FakeUsersRepository';
 import CreateUserService from './CreateUserService';
 import FakeHashProvider from '../providers/HashProvider/fakes/FakeHashProvider';
 
+let fakeUsersRepository: FakeUserRepository;
+let fakeHashProvider: FakeHashProvider;
+let createUser: CreateUserService;
+
 describe('CreateUser', () => {
+  beforeEach(() => {
+    fakeUsersRepository = new FakeUserRepository();
+    fakeHashProvider = new FakeHashProvider();
+    createUser = new CreateUserService(fakeUsersRepository, fakeHashProvider);
+  });
+
   it('should be able to create a new user', async () => {
-    const fakeUserRepository = new FakeUsersRepository();
-    const fakeHashProvider = new FakeHashProvider();
-
-    const createUser = new CreateUserService(
-      fakeUserRepository,
-      fakeHashProvider,
-    );
-
     const user = await createUser.execute({
-      fullName: 'Mark Lancaster',
-      cpf: '4328764598',
-      email: 'marklan@email.com.br',
+      fullName: 'John Doe',
+      cpf: '12345612390',
+      email: 'johndoe@example.com',
       password: '123456',
     });
 
@@ -25,26 +27,18 @@ describe('CreateUser', () => {
   });
 
   it('should not be able to create a new user with same email from another', async () => {
-    const fakeUserRepository = new FakeUsersRepository();
-    const fakeHashProvider = new FakeHashProvider();
-
-    const createUser = new CreateUserService(
-      fakeUserRepository,
-      fakeHashProvider,
-    );
-
     await createUser.execute({
-      fullName: 'Mark Lancaster',
-      cpf: '4328764598',
-      email: 'marklan@email.com.br',
+      fullName: 'John Doe',
+      cpf: '12345612390',
+      email: 'johndoe@example.com',
       password: '123456',
     });
 
-    expect(
+    await expect(
       createUser.execute({
-        fullName: 'Mark Lancaster',
-        cpf: '4328764598',
-        email: 'marklan@email.com.br',
+        fullName: 'John Doe',
+        cpf: '12345612390',
+        email: 'johndoe@example.com',
         password: '123456',
       }),
     ).rejects.toBeInstanceOf(AppError);
