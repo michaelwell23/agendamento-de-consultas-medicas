@@ -1,5 +1,5 @@
 import Appointment from '../infra/typeorm/entities/Appointment';
-import ICreateAppointmentDTO from '../dtos/ICreateAppoitmentDTO';
+import ICreateAppointmentDTO from '../dtos/ICreateAppointmentDTO';
 
 import IFindAllInMonthFromProviderDTO from '../dtos/IFindAllInMonthFromProviderDTO';
 import IFindAllInDayFromProviderDTO from '../dtos/IFindAllInDayFromProviderDTO';

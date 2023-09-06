@@ -12,5 +12,14 @@
     "cli": {
       "migrationsDir": "./src/shared/infra/typeorm/migrations"
     }
+  },
+  {
+    "name": "mongo",
+    "type": "mongodb",
+    "host": "localhost",
+    "port": 27017,
+    "database": "clinica_saude",
+    "useUnifiedTopology": true,
+    "entities": ["./src/modules/**/infra/typeorm/schemas/*.ts"]
   }
 ]
