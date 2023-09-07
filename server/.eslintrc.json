@@ -22,6 +22,7 @@
   "plugins": ["@typescript-eslint", "prettier"],
   "rules": {
     "prettier/prettier": "error",
+    "no-console": "off",
     "@ts-expect-error": "off",
     "class-methods-use-this": "off",
     "import/prefer-default-export": "off",
