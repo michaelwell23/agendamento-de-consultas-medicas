@@ -1,11 +1,14 @@
 import nodemailer, { Transporter } from 'nodemailer';
 import aws from 'aws-sdk';
+
 import mailConfig from '@config/mail';
 import { injectable, inject } from 'tsyringe';
 
 import IMailTemplateProvider from '@shared/container/providers/MailTemplateProvider/models/IMailTemplateProvider';
 import IMailProvider from '../models/IMailProvider';
 import ISendMailDTO from '../dtos/ISendMailDTO';
+
+require('aws-sdk/lib/maintenance_mode_message').suppress = true;
 
 @injectable()
 export default class SESMailProvider implements IMailProvider {
