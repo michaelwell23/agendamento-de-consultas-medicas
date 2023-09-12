@@ -6,6 +6,7 @@ import AppError from '@shared/errors/AppError';
 import Appointment from '@modules/appointments/infra/typeorm/entities/Appointment';
 import IAppointmentsRepository from '@modules/appointments/repositories/IAppointmentsRepository';
 import INotificationsRepository from '@modules/notifications/repositories/INotificationsRepository';
+import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 
 interface IRequestDTO {
   provider_id: string;
@@ -21,6 +22,9 @@ class CreateAppointmentService {
 
     @inject('NotificationsRepository')
     private notificationsRepository: INotificationsRepository,
+
+    @inject('CacheProvider')
+    private cacheProvider: ICacheProvider,
   ) {}
 
   public async execute({
@@ -49,7 +53,10 @@ class CreateAppointmentService {
     }
 
     const findAppointmentInSameDate =
-      await this.appointmentsRepository.findByDate(appointmentDate);
+      await this.appointmentsRepository.findByDate(
+        appointmentDate,
+        provider_id,
+      );
 
     if (findAppointmentInSameDate) {
       throw new AppError('This appointment is already booked.', 400);
@@ -67,6 +74,13 @@ class CreateAppointmentService {
       recipient_id: provider_id,
       content: `Você tem uma nova consulta agendada para ${dateFormatted}. Esteja preparado e revise o histórico do paciente, se disponível.`,
     });
+
+    await this.cacheProvider.invalidate(
+      `provider-appointments:${provider_id}:${format(
+        appointmentDate,
+        'yyyy-M-d',
+      )}`,
+    );
 
     return appointment;
   }

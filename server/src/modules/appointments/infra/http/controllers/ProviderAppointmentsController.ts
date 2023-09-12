@@ -19,7 +19,7 @@ class ListProviderAppointmentsController {
       year,
     });
 
-    return response.status(200).json(appointments);
+    return response.json(appointments);
   }
 }
 
