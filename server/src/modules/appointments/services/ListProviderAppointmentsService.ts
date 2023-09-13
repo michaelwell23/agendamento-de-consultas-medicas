@@ -43,8 +43,6 @@ class ListProviderAppointmentsService {
         },
       );
 
-      console.log('Buscou do banco... Palmeiras não tem mundial!');
-
       await this.cacheProvider.save(cacheKey, appointments);
     }
 
