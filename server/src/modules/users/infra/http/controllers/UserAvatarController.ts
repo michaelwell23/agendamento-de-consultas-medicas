@@ -10,7 +10,6 @@ class UserAvatarController {
 
     const user = await updateUserAvatar.execute({
       user_id: request.user.id,
-
       // @ts-expect-error
       avatarFilename: request.file.filename,
     });
