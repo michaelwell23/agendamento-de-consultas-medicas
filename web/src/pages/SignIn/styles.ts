@@ -65,7 +65,7 @@ export const AnimationContainer = styled.div`
       transition: background-color 0.5s;
 
       &:hover {
-        color: ${shade(0.2, '#f4ede8')};
+        color: ${shade(0.2, '#94de5e')};
       }
     }
   }
