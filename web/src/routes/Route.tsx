@@ -1,7 +1,7 @@
 import React from 'react';
 import {
-  RouteProps as ReactDOMRouteProps,
   Route as ReactDOMRoute,
+  RouteProps as ReactDOMRouteProps,
   Redirect,
 } from 'react-router-dom';
 
@@ -22,7 +22,7 @@ const Route: React.FC<RouteProps> = ({
   return (
     <ReactDOMRoute
       {...rest}
-      render={(location) => {
+      render={({ location }) => {
         return isPrivate === !!user ? (
           <Component />
         ) : (
