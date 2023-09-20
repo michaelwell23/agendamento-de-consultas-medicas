@@ -36,6 +36,7 @@
     "@typescript-eslint/ban-types": "off",
     "react/jsx-filename-extension": [1, { "extensions": [".tsx"] }],
     "import/prefer-default-export": "off",
+    "disable-next-line": "camelcase",
     "@typescript-eslint/explicit-function-return-type": [
       "error",
       {

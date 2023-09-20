@@ -1,5 +1,5 @@
-/* eslint-disable no-console */
 import React, { useRef, useCallback } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import * as Yup from 'yup';
 
 import { FormHandles } from '@unform/core';
@@ -7,7 +7,6 @@ import { Form } from '@unform/web';
 
 import { FiLock, FiLogIn, FiMail } from 'react-icons/fi';
 
-import { Link, useHistory } from 'react-router-dom';
 import { useAuth } from '../../hooks/auth';
 import { useToast } from '../../hooks/toast';
 
@@ -27,10 +26,10 @@ interface SignInFormData {
 
 const SignIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
-  const history = useHistory();
 
   const { signIn } = useAuth();
   const { addToast } = useToast();
+  const history = useHistory();
 
   const handleSubmit = useCallback(
     async (data: SignInFormData) => {
@@ -39,11 +38,10 @@ const SignIn: React.FC = () => {
 
         const schema = Yup.object().shape({
           email: Yup.string()
-            .required('E-mail obrigatório!')
-            .email('Digite email válido'),
-          password: Yup.string().required('Senha obrigatória!'),
+            .required('E-mail obrigatório')
+            .email('Digite um e-mail válido'),
+          password: Yup.string().required('Senha obrigatória'),
         });
-
         await schema.validate(data, {
           abortEarly: false,
         });
@@ -59,13 +57,14 @@ const SignIn: React.FC = () => {
           const errors = getValidationError(err);
 
           formRef.current?.setErrors(errors);
+
+          return;
         }
 
         addToast({
           type: 'error',
-          title: 'error na autenticação',
-          description:
-            'Ocorreu um erro ao fazer o login, verifique as credencias',
+          title: 'Erro na autenticação',
+          description: 'Ocorreu um erro ao fazer login, cheque as credenciais.',
         });
       }
     },
@@ -91,7 +90,7 @@ const SignIn: React.FC = () => {
               name="password"
               icon={FiLock}
               type="password"
-              placeholder="Password"
+              placeholder="Senha"
             />
 
             <Button type="submit">Entrar</Button>
