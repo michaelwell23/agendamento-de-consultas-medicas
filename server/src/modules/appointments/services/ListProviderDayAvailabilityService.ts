@@ -36,10 +36,10 @@ class ListProviderDayAvailabilityService {
         year,
       });
 
-    const hourStart = 6;
+    const hourStart = 8;
 
     const eachHourArray = Array.from(
-      { length: 12 },
+      { length: 10 },
       (_, index) => index + hourStart,
     );
 

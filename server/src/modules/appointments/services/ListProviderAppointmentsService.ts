@@ -2,10 +2,10 @@ import { injectable, inject } from 'tsyringe';
 
 import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 import { classToClass } from 'class-transformer';
-import IAppointmentsRepository from '../repositories/IAppointmentsRepository';
 import Appointment from '../infra/typeorm/entities/Appointment';
+import IAppointmentsRepository from '../repositories/IAppointmentsRepository';
 
-interface IRequest {
+interface IRequestDTO {
   provider_id: string;
   day: number;
   month: number;
@@ -27,9 +27,8 @@ class ListProviderAppointmentsService {
     day,
     month,
     year,
-  }: IRequest): Promise<Appointment[]> {
+  }: IRequestDTO): Promise<Appointment[]> {
     const cacheKey = `provider-appointments:${provider_id}:${year}-${month}-${day}`;
-
     let appointments = await this.cacheProvider.recover<Appointment[]>(
       cacheKey,
     );

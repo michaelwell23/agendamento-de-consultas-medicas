@@ -15,10 +15,16 @@ import rateLimiter from './middlewares/rateLimiter';
 import '@shared/infra/typeorm';
 import '@shared/container';
 
+const corsOptions = {
+  origin: 'http://localhost:3000',
+  credentials: true, // access-control-allow-credentials:true
+  optionSuccessStatus: 200,
+};
+
 const app = express();
 
+app.use(cors(corsOptions));
 app.use(rateLimiter);
-app.use(cors());
 
 app.use(express.json());
 app.use('/files', express.static(upload.uploadsFolder));
