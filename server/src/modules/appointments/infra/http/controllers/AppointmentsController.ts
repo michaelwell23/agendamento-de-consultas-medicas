@@ -1,3 +1,4 @@
+import { classToClass } from 'class-transformer';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
@@ -16,7 +17,7 @@ class AppointmentsController {
       user_id,
     });
 
-    return response.status(200).json(appointment);
+    return response.json(classToClass(appointment));
   }
 }
 
