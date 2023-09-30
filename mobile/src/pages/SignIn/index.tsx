@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable import/extensions */
 import React, { useCallback, useRef } from 'react';
 import {
@@ -24,6 +25,8 @@ import Button from '../../components/Button';
 
 import logoImg from '../../assets/logo.png';
 
+import getValidationError from '../../utils/getValidationErrors';
+
 import {
   Container,
   Title,
@@ -32,22 +35,19 @@ import {
   CreateAcountButton,
   CreateAcountButtonText,
 } from './styles';
-import getValidationError from '../../utils/getValidationErrors';
+
+interface SignInFormData {
+  email: string;
+  password: string;
+}
 
 const SignIn: React.FC = () => {
+  const navigation = useNavigation();
   const formRef = useRef<FormHandles>(null);
+
   const passwordInputRef = useRef<TextInput>(null);
 
-  const navigation = useNavigation();
-
-  const { signIn, user } = useAuth();
-
-  console.log(user);
-
-  interface SignInFormData {
-    email: string;
-    password: string;
-  }
+  const { signIn } = useAuth();
 
   const handleSignIn = useCallback(
     async (data: SignInFormData) => {
@@ -56,9 +56,9 @@ const SignIn: React.FC = () => {
 
         const schema = Yup.object().shape({
           email: Yup.string()
-            .required('E-mail obrigatório!')
-            .email('Digite email válido'),
-          password: Yup.string().required('Senha obrigatória!'),
+            .required('E-mail obrigatório')
+            .email('Digite um e-mail válido'),
+          password: Yup.string().required('Senha obrigatória'),
         });
 
         await schema.validate(data, {
@@ -74,11 +74,13 @@ const SignIn: React.FC = () => {
           const errors = getValidationError(err);
 
           formRef.current?.setErrors(errors);
+
+          return;
         }
 
         Alert.alert(
-          'Erro na Autenticação',
-          'Ocorreu um erro ao fazer login, cheque as credenciais',
+          'Erro na autenticação',
+          'Ocorreu um erro ao fazer login, cheque as credenciais.',
         );
       }
     },
@@ -89,8 +91,8 @@ const SignIn: React.FC = () => {
     <>
       <KeyboardAvoidingView
         style={{ flex: 1 }}
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         enabled
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       >
         <ScrollView
           keyboardShouldPersistTaps="handled"
@@ -139,7 +141,9 @@ const SignIn: React.FC = () => {
             </Button>
 
             <ForgotPassword>
-              <ForgotPasswordText>Esqueceu sua senha?</ForgotPasswordText>
+              <ForgotPasswordText onPress={() => {}}>
+                Esqueceu sua senha?
+              </ForgotPasswordText>
             </ForgotPassword>
           </Container>
         </ScrollView>

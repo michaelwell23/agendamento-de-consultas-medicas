@@ -1,5 +1,3 @@
-/* eslint-disable react/require-default-props */
-/* eslint-disable @typescript-eslint/no-empty-function */
 import React, {
   createContext,
   useCallback,
@@ -10,9 +8,17 @@ import React, {
 import AsyncStorage from '@react-native-community/async-storage';
 import api from '../services/api';
 
+interface User {
+  id: string;
+  fullName: string;
+  cpf: string;
+  email: string;
+  avatar_url: string;
+}
+
 interface AuthState {
   token: string;
-  user: object;
+  user: User;
 }
 
 interface SignInCredentials {
@@ -21,7 +27,7 @@ interface SignInCredentials {
 }
 
 interface AuthContextData {
-  user: object;
+  user: User;
   loading: boolean;
   signIn(credentails: SignInCredentials): Promise<void>;
   signOut(): void;
