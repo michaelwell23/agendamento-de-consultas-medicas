@@ -11,7 +11,7 @@ export const Container = styled.View`
 
 export const Header = styled.View`
   padding: 24px;
-  padding-top: ${getStatusBarHeight()}px;
+  /* padding-top: ${getStatusBarHeight() + 24}px; */
   background: #28262e;
 
   flex-direction: row;
@@ -86,3 +86,22 @@ export const ProviderMetaText = styled.Text`
   color: #999591;
   font-family: 'RobotoSlab-Regular';
 `;
+
+// BUTTON PLUS STYLE
+// export const FixedButtonContainer = styled.View`
+//   position: absolute;
+//   bottom: 20px;
+//   right: 20px;
+// `;
+
+// export const FixedButton = styled.TouchableOpacity`
+//   background-color: #94de5e;
+//   padding: 10px 10px;
+//   border-radius: 5px;
+// `;
+
+// export const FixedButtonText = styled.Text`
+//   color: #fff;
+//   font-size: 16px;
+//   font-weight: bold;
+// `;
