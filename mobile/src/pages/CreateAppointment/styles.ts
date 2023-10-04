@@ -1,4 +1,4 @@
-import { FlatList } from 'react-native';
+import { FlatList, View } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 import styled from 'styled-components/native';
@@ -28,7 +28,7 @@ export const Container = styled.View`
 
 export const Header = styled.View`
   padding: 24px;
-  /* padding-top: ${getStatusBarHeight() + 24}px; */
+  padding-top: ${getStatusBarHeight() + 24}px;
   background: #28262e;
   flex-direction: row;
   justify-content: space-between;
@@ -90,7 +90,7 @@ export const Calendar = styled.View``;
 export const Title = styled.Text`
   font-family: 'RobotoSlab-Medium';
   color: #f4ede8;
-  font-size: 24px;
+  font-size: 18px;
   margin: 0 24px 24px;
 `;
 
