@@ -1,7 +1,8 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import Icon from 'react-native-vector-icons/Feather';
 import DateTimePecker from '@react-native-community/datetimepicker';
 
+import { format } from 'date-fns';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
 import { Platform } from 'react-native';
@@ -70,7 +71,7 @@ const CreateAppointment: React.FC = () => {
   }, [goBack]);
 
   useEffect(() => {
-    api.get('providers').then((response) => {
+    api.get('/providers').then((response) => {
       setProviders(response.data);
     });
   }, []);
@@ -87,7 +88,7 @@ const CreateAppointment: React.FC = () => {
       .then((response) => {
         setAvailability(response.data);
       });
-  }, [selectedDate, selectedProvider]);
+  }, [selectedProvider, selectedDate]);
 
   const headleSelectProvider = useCallback((providerId: string) => {
     setSelectedProvider(providerId);
@@ -109,6 +110,30 @@ const CreateAppointment: React.FC = () => {
     },
     [],
   );
+
+  const morningAvailability = useMemo(() => {
+    return availability
+      .filter(({ hour }) => hour < 12)
+      .map(({ hour, available }) => {
+        return {
+          hour,
+          available,
+          hourFormatted: format(new Date().setHours(hour), 'HH:00'),
+        };
+      });
+  }, [availability]);
+
+  const afternoonAvailability = useMemo(() => {
+    return availability
+      .filter(({ hour }) => hour >= 12)
+      .map(({ hour, available }) => {
+        return {
+          hour,
+          available,
+          hourFormatted: format(new Date().setHours(hour), 'HH:00'),
+        };
+      });
+  }, [availability]);
 
   return (
     <Container>
@@ -160,6 +185,14 @@ const CreateAppointment: React.FC = () => {
           />
         )}
       </Calendar>
+
+      {morningAvailability.map(({ hourFormatted, available }) => (
+        <Title key={hourFormatted}>{hourFormatted}</Title>
+      ))}
+
+      {afternoonAvailability.map(({ hourFormatted, available }) => (
+        <Title key={hourFormatted}>{hourFormatted}</Title>
+      ))}
     </Container>
   );
 };
