@@ -20,9 +20,6 @@ import {
   ProviderName,
   ProviderMeta,
   ProviderMetaText,
-  // FixedButtonContainer,
-  // FixedButton,
-  // FixedButtonText,
 } from './styles';
 
 export interface Providers {
@@ -92,13 +89,6 @@ const Dashboard: React.FC = () => {
           </ProviderContainer>
         )}
       />
-      {/* <FixedButtonContainer>
-        <FixedButton onPress={() => {}}>
-          <FixedButtonText>
-            <Icon name="plus" size={20} color="#000" />
-          </FixedButtonText>
-        </FixedButton>
-      </FixedButtonContainer> */}
     </Container>
   );
 };
