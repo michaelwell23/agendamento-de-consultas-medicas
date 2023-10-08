@@ -31,6 +31,7 @@ describe('SendForgotPasswordEmail', () => {
       cpf: '12397823490',
       email: 'johndoe@example.com',
       password: '123456',
+      provider: false,
     });
 
     await sendForgotPasswordEmail.execute({
@@ -56,6 +57,7 @@ describe('SendForgotPasswordEmail', () => {
       cpf: '12397823490',
       email: 'johndoe@example.com',
       password: '123456',
+      provider: false,
     });
 
     await sendForgotPasswordEmail.execute({

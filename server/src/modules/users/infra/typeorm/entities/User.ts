@@ -52,5 +52,9 @@ class User {
         return null;
     }
   }
+
+  @Column({ default: false })
+  @Exclude()
+  provider: boolean;
 }
 export default User;

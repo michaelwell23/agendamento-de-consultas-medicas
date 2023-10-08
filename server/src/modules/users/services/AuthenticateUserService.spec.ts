@@ -25,6 +25,7 @@ describe('AuthenticateUser', () => {
       cpf: '12345679890',
       email: 'johndoe@example.com',
       password: '123456',
+      provider: false,
     });
 
     const response = await authenticateUser.execute({
@@ -51,6 +52,7 @@ describe('AuthenticateUser', () => {
       cpf: '12345679890',
       email: 'johndoe@example.com',
       password: '123456',
+      provider: false,
     });
 
     await expect(

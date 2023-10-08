@@ -1,7 +1,8 @@
 import { injectable, inject } from 'tsyringe';
+import { classToClass } from 'class-transformer';
 
 import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
-import { classToClass } from 'class-transformer';
+import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import Appointment from '../infra/typeorm/entities/Appointment';
 import IAppointmentsRepository from '../repositories/IAppointmentsRepository';
 
@@ -20,6 +21,9 @@ class ListProviderAppointmentsService {
 
     @inject('CacheProvider')
     private cacheProvider: ICacheProvider,
+
+    @inject('UsersRepository') // Injete o repositório de usuários.
+    private usersRepository: IUsersRepository,
   ) {}
 
   public async execute({
@@ -34,6 +38,12 @@ class ListProviderAppointmentsService {
     );
 
     if (!appointments) {
+      const providerUser = await this.usersRepository.findById(provider_id);
+
+      if (!providerUser || providerUser.provider === false) {
+        throw new Error('Invalid provider.');
+      }
+
       appointments = await this.appointmentsRepository.findAllInDayFromProvider(
         {
           provider_id,

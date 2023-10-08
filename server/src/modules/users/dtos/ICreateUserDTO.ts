@@ -3,4 +3,5 @@ export default interface ICreateUserDTO {
   cpf: string;
   email: string;
   password: string;
+  provider: boolean;
 }

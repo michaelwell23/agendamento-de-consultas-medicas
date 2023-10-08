@@ -24,6 +24,7 @@ describe('UpdateUserAvatar', () => {
       cpf: '12398745689',
       email: 'johndoe@example.com',
       password: '123456',
+      provider: false,
     });
 
     await updateUserAvatar.execute({
@@ -51,6 +52,7 @@ describe('UpdateUserAvatar', () => {
       cpf: '12398745689',
       email: 'johndoe@example.com',
       password: '123456',
+      provider: false,
     });
 
     await updateUserAvatar.execute({

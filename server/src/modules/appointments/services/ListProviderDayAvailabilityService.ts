@@ -1,6 +1,7 @@
 import { injectable, inject } from 'tsyringe';
 import { getHours, isAfter } from 'date-fns';
 
+import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import IAppointmentsRepository from '../repositories/IAppointmentsRepository';
 
 interface IRequestDTO {
@@ -20,6 +21,9 @@ class ListProviderDayAvailabilityService {
   constructor(
     @inject('AppointmentsRepository')
     private appointmentsRepository: IAppointmentsRepository,
+
+    @inject('UsersRepository')
+    private usersRepository: IUsersRepository,
   ) {}
 
   public async execute({
@@ -36,10 +40,18 @@ class ListProviderDayAvailabilityService {
         year,
       });
 
-    const hourStart = 8;
+    if (!appointments) {
+      const providerUser = await this.usersRepository.findById(provider_id);
+
+      if (!providerUser || providerUser.provider === false) {
+        throw new Error('Invalid provider.');
+      }
+    }
+
+    const hourStart = 6;
 
     const eachHourArray = Array.from(
-      { length: 10 },
+      { length: 17 },
       (_, index) => index + hourStart,
     );
 

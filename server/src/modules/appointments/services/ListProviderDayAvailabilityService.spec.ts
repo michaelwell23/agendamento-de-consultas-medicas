@@ -1,26 +1,39 @@
+import FakeUsersRepository from '@modules/users/repositories/fakes/FakeUsersRepository';
 import FakeAppointmentsRepository from '../repositories/fakes/FakeAppointmentsRepository';
 import ListProviderDayAvailabilityService from './ListProviderDayAvailabilityService';
 
 let fakeAppointmentsRepository: FakeAppointmentsRepository;
 let listProviderDayAvailability: ListProviderDayAvailabilityService;
+let usersRepository: FakeUsersRepository;
 
 describe('ListProviderDayAvailability', () => {
   beforeEach(() => {
     fakeAppointmentsRepository = new FakeAppointmentsRepository();
+    usersRepository = new FakeUsersRepository();
+
     listProviderDayAvailability = new ListProviderDayAvailabilityService(
       fakeAppointmentsRepository,
+      usersRepository,
     );
   });
 
   it('should be able to list the day availability from provider', async () => {
+    const user = await usersRepository.create({
+      fullName: 'Provider User',
+      cpf: '12345678990',
+      email: 'provider@example.com',
+      password: 'password',
+      provider: true, // Set provider to true
+    });
+
     await fakeAppointmentsRepository.create({
-      provider_id: 'user',
+      provider_id: user.id, // Use user.id as the provider_id
       user_id: '2',
       date: new Date(2023, 4, 20, 14, 0, 0),
     });
 
     await fakeAppointmentsRepository.create({
-      provider_id: 'user',
+      provider_id: user.id, // Use user.id as the provider_id
       user_id: '2',
       date: new Date(2023, 4, 20, 15, 0, 0),
     });
@@ -30,7 +43,7 @@ describe('ListProviderDayAvailability', () => {
     });
 
     const availability = await listProviderDayAvailability.execute({
-      provider_id: 'user',
+      provider_id: user.id, // Use user.id as the provider_id
       day: 20,
       year: 2023,
       month: 5,

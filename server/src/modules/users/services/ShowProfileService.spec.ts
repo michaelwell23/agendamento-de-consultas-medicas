@@ -18,6 +18,7 @@ describe('ShowProfile', () => {
       cpf: '12345678909',
       email: 'johndoe@example.com',
       password: '123456',
+      provider: false,
     });
 
     const profile = await showProfile.execute({

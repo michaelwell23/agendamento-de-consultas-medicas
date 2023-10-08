@@ -7,6 +7,7 @@ import Appointment from '@modules/appointments/infra/typeorm/entities/Appointmen
 import IAppointmentsRepository from '@modules/appointments/repositories/IAppointmentsRepository';
 import INotificationsRepository from '@modules/notifications/repositories/INotificationsRepository';
 import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
+import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 
 interface IRequestDTO {
   provider_id: string;
@@ -25,6 +26,9 @@ class CreateAppointmentService {
 
     @inject('CacheProvider')
     private cacheProvider: ICacheProvider,
+
+    @inject('UsersRepository')
+    private usersRepository: IUsersRepository,
   ) {}
 
   public async execute({
@@ -50,6 +54,12 @@ class CreateAppointmentService {
         "You can't only create appointments between 8 am ad 5pm.",
         400,
       );
+    }
+
+    const providerUser = await this.usersRepository.findById(provider_id);
+
+    if (!providerUser || !providerUser.provider) {
+      throw new AppError('Invalid provider.', 400);
     }
 
     const findAppointmentInSameDate =

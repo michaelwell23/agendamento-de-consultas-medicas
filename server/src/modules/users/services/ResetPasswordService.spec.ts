@@ -29,6 +29,7 @@ describe('ResetPasswordService', () => {
       cpf: '12345612390',
       email: 'johndoe@example.com',
       password: '123456',
+      provider: false,
     });
 
     const { token } = await fakeUserTokensRepository.generate(user.id);
@@ -74,6 +75,7 @@ describe('ResetPasswordService', () => {
       cpf: '12345612390',
       email: 'johndoe@example.com',
       password: '123456',
+      provider: false,
     });
 
     const { token } = await fakeUserTokensRepository.generate(user.id);

@@ -22,16 +22,18 @@ describe('ListProvider', () => {
   it('should be able to list the providers', async () => {
     const user1 = await fakeUsersRepository.create({
       fullName: 'John Doe',
-      cpf: '123456987',
+      cpf: '12345698770',
       email: 'johndoe@example.com',
       password: '123456',
+      provider: true, // Defina provider como true.
     });
 
     const user2 = await fakeUsersRepository.create({
       fullName: 'John Joe',
-      cpf: '123456987',
+      cpf: '12345697890',
       email: 'johnjoe@example.com',
       password: '123456',
+      provider: true, // Defina provider como true.
     });
 
     const loggedUser = await fakeUsersRepository.create({
@@ -39,6 +41,7 @@ describe('ListProvider', () => {
       cpf: '123456987',
       email: 'johnvoe@example.com',
       password: '123456',
+      provider: false,
     });
 
     const providers = await listProviders.execute({

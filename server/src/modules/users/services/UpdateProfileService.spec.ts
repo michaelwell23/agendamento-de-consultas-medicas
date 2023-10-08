@@ -24,6 +24,7 @@ describe('UpdateProfile', () => {
       cpf: '123456789800',
       email: 'johndoe@example.com',
       password: '123456',
+      provider: false,
     });
 
     const updatedUser = await updateProfile.execute({
@@ -52,6 +53,7 @@ describe('UpdateProfile', () => {
       cpf: '12345678900',
       email: 'johndoe@example.com',
       password: '123456',
+      provider: false,
     });
 
     const user = await fakeUsersRepository.create({
@@ -59,6 +61,7 @@ describe('UpdateProfile', () => {
       cpf: '12345678900',
       email: 'test@example.com',
       password: '123456',
+      provider: false,
     });
 
     await expect(
@@ -76,6 +79,7 @@ describe('UpdateProfile', () => {
       cpf: '12345678900',
       email: 'johndoe@example.com',
       password: '123123',
+      provider: false,
     });
 
     const updatedUser = await updateProfile.execute({
@@ -95,6 +99,7 @@ describe('UpdateProfile', () => {
       cpf: '12345678900',
       email: 'johndoe@example.com',
       password: '123123',
+      provider: false,
     });
 
     await expect(
@@ -113,6 +118,7 @@ describe('UpdateProfile', () => {
       cpf: '12345678900',
       email: 'johndoe@example.com',
       password: '123123',
+      provider: false,
     });
 
     await expect(
