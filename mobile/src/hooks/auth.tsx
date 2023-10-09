@@ -1,19 +1,31 @@
 import React, {
   createContext,
   useCallback,
+  useState,
   useContext,
   useEffect,
-  useState,
 } from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
 import api from '../services/api';
 
+interface SignInCredentials {
+  email: string;
+  password: string;
+}
+
 interface User {
   id: string;
-  fullName: string;
-  cpf: string;
+  name: string;
   email: string;
   avatar_url: string;
+}
+
+interface AuthContextData {
+  user: User;
+  loading: boolean;
+  signIn(credentials: SignInCredentials): Promise<void>;
+  signOut(): void;
+  updateUser(user: User): Promise<void>;
 }
 
 interface AuthState {
@@ -21,31 +33,17 @@ interface AuthState {
   user: User;
 }
 
-interface SignInCredentials {
-  email: string;
-  password: string;
-}
-
-interface AuthContextData {
-  user: User;
-  loading: boolean;
-  signIn(credentails: SignInCredentials): Promise<void>;
-  signOut(): void;
-}
-
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
-export const AuthProvider: React.FC<{ children?: React.ReactNode }> = ({
-  children,
-}) => {
+export const AuthProvider: React.FC = ({ children }) => {
   const [data, setData] = useState<AuthState>({} as AuthState);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function loadStorageData(): Promise<void> {
+    async function loadStoragedData(): Promise<void> {
       const [token, user] = await AsyncStorage.multiGet([
-        '@+clinicaSaúde:token',
-        '@+clinicaSaúde:user',
+        '@GoBarber:token',
+        '@GoBarber:user',
       ]);
 
       if (token[1] && user[1]) {
@@ -56,8 +54,7 @@ export const AuthProvider: React.FC<{ children?: React.ReactNode }> = ({
 
       setLoading(false);
     }
-
-    loadStorageData();
+    loadStoragedData();
   }, []);
 
   const signIn = useCallback(async ({ email, password }) => {
@@ -69,8 +66,8 @@ export const AuthProvider: React.FC<{ children?: React.ReactNode }> = ({
     const { token, user } = response.data;
 
     await AsyncStorage.multiSet([
-      ['@+clinicaSaúde:token', token],
-      ['@+clinicaSaúde:user', JSON.stringify(user)],
+      ['@GoBarber:token', token],
+      ['@GoBarber:user', JSON.stringify(user)],
     ]);
 
     api.defaults.headers.authorization = `Bearer ${token}`;
@@ -79,16 +76,27 @@ export const AuthProvider: React.FC<{ children?: React.ReactNode }> = ({
   }, []);
 
   const signOut = useCallback(async () => {
-    await AsyncStorage.multiRemove([
-      '@+clinicaSaúde:token',
-      '@+clinicaSaúde:user',
-    ]);
+    await AsyncStorage.multiRemove(['@GoBarber:token', '@GoBarber:user']);
 
     setData({} as AuthState);
   }, []);
 
+  const updateUser = useCallback(
+    async (user: User) => {
+      await AsyncStorage.setItem('@GoBarber:user', JSON.stringify(user));
+
+      setData({
+        token: data.token,
+        user,
+      });
+    },
+    [setData, data.token],
+  );
+
   return (
-    <AuthContext.Provider value={{ user: data.user, loading, signIn, signOut }}>
+    <AuthContext.Provider
+      value={{ user: data.user, loading, signIn, signOut, updateUser }}
+    >
       {children}
     </AuthContext.Provider>
   );
@@ -98,7 +106,7 @@ export function useAuth(): AuthContextData {
   const context = useContext(AuthContext);
 
   if (!context) {
-    throw new Error('UseAuth must be used within an AUthProvider');
+    throw new Error('useAuth must be used within an AuthProvider');
   }
 
   return context;
