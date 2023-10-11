@@ -47,6 +47,7 @@ const Profile: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const navigation = useNavigation();
 
+  const cpfInputRef = useRef<TextInput>(null);
   const emailInputRef = useRef<TextInput>(null);
   const oldPasswordInputRef = useRef<TextInput>(null);
   const passwordInputRef = useRef<TextInput>(null);
@@ -58,7 +59,7 @@ const Profile: React.FC = () => {
         formRef.current?.setErrors({});
 
         const schema = Yup.object().shape({
-          name: Yup.string().required('Nome obrigatório'),
+          fullName: Yup.string().required('Nome obrigatório'),
           cpf: Yup.string(),
           email: Yup.string()
             .required('E-mail obrigatório')
@@ -201,15 +202,17 @@ const Profile: React.FC = () => {
                 autoCapitalize="words"
                 returnKeyType="next"
                 onSubmitEditing={() => {
-                  emailInputRef.current?.focus();
+                  cpfInputRef.current?.focus();
                 }}
                 name="fullName"
                 icon="user"
-                placeholder="Nome"
+                placeholder="Nome Completo"
               />
+
               <Input
                 autoCapitalize="words"
                 returnKeyType="next"
+                ref={cpfInputRef}
                 onSubmitEditing={() => {
                   emailInputRef.current?.focus();
                 }}
@@ -217,6 +220,7 @@ const Profile: React.FC = () => {
                 icon="credit-card"
                 placeholder="cpf"
               />
+
               <Input
                 keyboardType="email-address"
                 autoCorrect={false}
@@ -230,6 +234,7 @@ const Profile: React.FC = () => {
                 icon="mail"
                 placeholder="E-mail"
               />
+
               <Input
                 secureTextEntry
                 textContentType="newPassword"
@@ -275,7 +280,7 @@ const Profile: React.FC = () => {
                   formRef.current?.submitForm();
                 }}
               >
-                Confirmar mudanças
+                Salvar ALterações
               </Button>
             </Form>
           </Container>
