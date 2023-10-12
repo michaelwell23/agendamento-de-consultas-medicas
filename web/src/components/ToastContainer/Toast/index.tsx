@@ -7,7 +7,6 @@ import {
 } from 'react-icons/fi';
 
 import { ToastMessage, useToast } from '../../../hooks/toast';
-
 import { Container } from './styles';
 
 interface ToastProps {
@@ -32,7 +31,7 @@ const Toast: React.FC<ToastProps> = ({ message, style }) => {
     return () => {
       clearTimeout(timer);
     };
-  }, [removeToast, message.id]);
+  }, [message.id, removeToast]);
 
   return (
     <Container
@@ -47,7 +46,7 @@ const Toast: React.FC<ToastProps> = ({ message, style }) => {
         {message.description && <p>{message.description}</p>}
       </div>
 
-      <button onClick={() => removeToast(message.id)} type="button">
+      <button type="button" onClick={() => removeToast(message.id)}>
         <FiXCircle size={18} />
       </button>
     </Container>

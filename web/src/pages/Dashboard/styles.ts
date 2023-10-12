@@ -52,8 +52,13 @@ export const Profile = styled.div`
       color: #949494;
     }
 
-    strong {
+    a {
+      text-decoration: none;
       color: #94de5e;
+
+      &:hover {
+        opacity: 0.8;
+      }
     }
   }
 `;

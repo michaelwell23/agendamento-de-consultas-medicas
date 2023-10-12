@@ -51,6 +51,10 @@ export const Container = styled.div<ContainerProps>`
     &::placeholder {
       color: #666360;
     }
+
+    &:disabled {
+      color: #666360;
+    }
   }
 
   svg {

@@ -21,6 +21,7 @@ import logoImg from '../../assets/logo.png';
 import { FiClock, FiPower } from 'react-icons/fi';
 import { useAuth } from '../../hooks/auth';
 import api from '../../services/apiClient';
+import { Link } from 'react-router-dom';
 
 interface MonthAvailabilityItem {
   day: number;
@@ -123,7 +124,16 @@ const Dashboard: React.FC = () => {
 
   const afternoonAppointments = useMemo(() => {
     return appointments.filter((appointment) => {
-      return parseISO(appointment.date).getHours() >= 12;
+      return (
+        parseISO(appointment.date).getHours() >= 12 &&
+        parseISO(appointment.date).getHours() < 17
+      );
+    });
+  }, [appointments]);
+
+  const nightAppointments = useMemo(() => {
+    return appointments.filter((appointment) => {
+      return parseISO(appointment.date).getHours() >= 17;
     });
   }, [appointments]);
 
@@ -143,7 +153,9 @@ const Dashboard: React.FC = () => {
             <img src={user.avatar_url} alt={user.fullName} />
             <div>
               <span>Bem-vindo,</span>
-              <strong>{user.fullName}</strong>
+              <Link to="/profile">
+                <strong>{user.fullName}</strong>
+              </Link>
             </div>
           </Profile>
 
@@ -207,11 +219,35 @@ const Dashboard: React.FC = () => {
           <Section>
             <strong>Tarde</strong>
 
-            {morningAppointments.length === 0 && (
+            {afternoonAppointments.length === 0 && (
               <p>Não há nenhuma consulta marcada.</p>
             )}
 
             {afternoonAppointments.map((appointment) => (
+              <Appointment key={appointment.id}>
+                <span>
+                  <FiClock /> {appointment.hourFormatted}
+                </span>
+                <div>
+                  <img
+                    src={appointment.user.avatar_url}
+                    alt={appointment.user.fullName}
+                  />
+
+                  <strong>{appointment.user.fullName}</strong>
+                </div>
+              </Appointment>
+            ))}
+          </Section>
+
+          <Section>
+            <strong>Noite</strong>
+
+            {nightAppointments.length === 0 && (
+              <p>Não há nenhuma consulta marcada.</p>
+            )}
+
+            {nightAppointments.map((appointment) => (
               <Appointment key={appointment.id}>
                 <span>
                   <FiClock /> {appointment.hourFormatted}
