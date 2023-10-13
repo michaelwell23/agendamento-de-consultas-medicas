@@ -263,3 +263,30 @@ export const Calender = styled.aside`
     color: #232129 !important;
   }
 `;
+
+export const Button = styled.button`
+  position: fixed;
+  bottom: 50px;
+  right: 50px;
+  background-color: #94de5f;
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+
+  &:hover::after {
+    content: 'Criar agendamento';
+    position: absolute;
+    top: -34px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    border-radius: 5px;
+    padding: 5px 10px;
+    white-space: nowrap;
+  }
+`;

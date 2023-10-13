@@ -4,6 +4,8 @@ import 'react-day-picker/lib/style.css';
 import ptBR from 'date-fns/locale/pt-BR';
 import { format, isAfter, isToday, parseISO } from 'date-fns';
 
+import { FiClock, FiPower, FiPlusCircle } from 'react-icons/fi';
+
 import {
   Container,
   Header,
@@ -15,10 +17,10 @@ import {
   Calender,
   Section,
   Appointment,
+  Button,
 } from './styles';
 
 import logoImg from '../../assets/logo.png';
-import { FiClock, FiPower } from 'react-icons/fi';
 import { useAuth } from '../../hooks/auth';
 import api from '../../services/apiClient';
 import { Link } from 'react-router-dom';
