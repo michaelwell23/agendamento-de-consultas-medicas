@@ -4,7 +4,7 @@ import 'react-day-picker/lib/style.css';
 import ptBR from 'date-fns/locale/pt-BR';
 import { format, isAfter, isToday, parseISO } from 'date-fns';
 
-import { FiClock, FiPower, FiPlusCircle } from 'react-icons/fi';
+import { FiClock, FiPower } from 'react-icons/fi';
 
 import {
   Container,
@@ -17,7 +17,6 @@ import {
   Calender,
   Section,
   Appointment,
-  Button,
 } from './styles';
 
 import logoImg from '../../assets/logo.png';
