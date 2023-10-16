@@ -85,6 +85,7 @@ const SignIn: React.FC = () => {
               icon={FiMail}
               type="text"
               placeholder="E-mail"
+              data-testid="input-container"
             />
             <Input
               name="password"
