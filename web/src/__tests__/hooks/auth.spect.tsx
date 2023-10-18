@@ -1,25 +1,22 @@
-import { renderHook } from '@testing-library/react-hooks';
-import { AuthProvider, useAuth } from '../../hooks/auth';
+import { renderHook, act } from '@testing-library/react-hooks';
 import MockAdapter from 'axios-mock-adapter';
+import { useAuth, AuthProvider } from '../../hooks/auth';
 import api from '../../services/apiClient';
 
-const apiMook = new MockAdapter(api);
+const apiMock = new MockAdapter(api);
 
 describe('Auth hook', () => {
   it('should be able to sign in', async () => {
     const apiResponse = {
       user: {
-        id: 'user-1',
-        fullName: 'Michael Wellington',
-        cpf: '12345678909',
-        email: 'michaelwellington@email.com',
+        id: 'user-123',
+        fullName: 'John Doe',
+        cpf: '123456',
+        email: 'johndoe@example.com',
       },
-      token: 'tokeUser-123',
+      token: 'token-123',
     };
-
-    apiMook.onPost('sessions').reply(200, {
-      apiResponse,
-    });
+    apiMock.onPost('sessions').reply(200, apiResponse);
 
     const setItemSpy = jest.spyOn(Storage.prototype, 'setItem');
 
@@ -28,21 +25,99 @@ describe('Auth hook', () => {
     });
 
     result.current.signIn({
-      email: 'michaelwellington@email.com',
+      email: 'johndoe@example.com',
       password: '123456',
     });
 
     await waitForNextUpdate();
 
     expect(setItemSpy).toHaveBeenCalledWith(
-      '@+clinicaSaúde:token',
+      '@+clinicaSaude:token',
       apiResponse.token,
     );
     expect(setItemSpy).toHaveBeenCalledWith(
-      '@+clinicaSaúde:user',
+      '@+clinicaSaude:user',
       JSON.stringify(apiResponse.user),
     );
+    expect(result.current.user.email).toEqual('johndoe@example.com');
+  });
 
-    expect(result.current.user.email).toEqual('michaelwellington@email.com');
+  it('should restore saved data from storage when auth initiate', () => {
+    jest.spyOn(Storage.prototype, 'getItem').mockImplementation((key) => {
+      switch (key) {
+        case '@+clinicaSaude:token':
+          return 'token-123';
+        case '@+clinicaSaude:user':
+          return JSON.stringify({
+            id: 'user-123',
+            name: 'John Doe',
+            email: 'johndoe@example.com',
+          });
+        default:
+          return null;
+      }
+    });
+
+    const { result } = renderHook(() => useAuth(), {
+      wrapper: AuthProvider,
+    });
+
+    expect(result.current.user.email).toEqual('johndoe@example.com');
+  });
+
+  it('should be able to sign out', async () => {
+    jest.spyOn(Storage.prototype, 'getItem').mockImplementation((key) => {
+      switch (key) {
+        case '@+clinicaSaude:token':
+          return 'token-123';
+        case '@+clinicaSaude:user':
+          return JSON.stringify({
+            id: 'user-123',
+            name: 'John Doe',
+            email: 'johndoe@example.com',
+          });
+        default:
+          return null;
+      }
+    });
+
+    const removeItemSpy = jest.spyOn(Storage.prototype, 'removeItem');
+
+    const { result } = renderHook(() => useAuth(), {
+      wrapper: AuthProvider,
+    });
+
+    act(() => {
+      result.current.signOut();
+    });
+
+    expect(removeItemSpy).toHaveBeenCalledTimes(2);
+    expect(result.current.user).toBeUndefined();
+  });
+
+  it('should be able to update user data', async () => {
+    const setItemSpy = jest.spyOn(Storage.prototype, 'setItem');
+
+    const { result } = renderHook(() => useAuth(), {
+      wrapper: AuthProvider,
+    });
+
+    const user = {
+      id: 'user-123',
+      name: 'John Doe',
+      email: 'johndoe@example.com',
+      avatar_url: 'image-test.jpg',
+    };
+
+    act(() => {
+      result.current.updateUser(user);
+    });
+
+    expect(setItemSpy).toBeCalledWith(
+      '@+clinicaSaude:user',
+      JSON.stringify(user),
+    );
+
+    expect(result.current.user).toEqual(user);
   });
 });

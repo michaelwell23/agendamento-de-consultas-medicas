@@ -1,17 +1,11 @@
-import React, { createContext, useCallback, useContext, useState } from 'react';
+import React, { createContext, useCallback, useState, useContext } from 'react';
 import api from '../services/apiClient';
 
 interface User {
   id: string;
-  fullName: string;
-  cpf: string;
-  email: string;
   avatar_url: string;
-}
-
-interface AuthState {
-  token: string;
-  user: User;
+  email: string;
+  name: string;
 }
 
 interface SignInCredentials {
@@ -21,17 +15,23 @@ interface SignInCredentials {
 
 interface AuthContextData {
   user: User;
-  signIn(credentails: SignInCredentials): Promise<void>;
+  signIn(credentials: SignInCredentials): Promise<void>;
   signOut(): void;
   updateUser(user: User): void;
 }
 
-const AuthContext = createContext<AuthContextData>({} as AuthContextData);
+interface AuthState {
+  token: string;
+  user: User;
+}
+
+// const AuthContext = createContext<AuthContextData>({} as AuthContextData);
+const AuthContext = createContext({} as AuthContextData);
 
 export const AuthProvider: React.FC = ({ children }) => {
   const [data, setData] = useState<AuthState>(() => {
-    const token = localStorage.getItem('@+clinicaSaúde:token');
-    const user = localStorage.getItem('@+clinicaSaúde:user');
+    const token = localStorage.getItem('@+clinicaSaude:token');
+    const user = localStorage.getItem('@+clinicaSaude:user');
 
     if (token && user) {
       api.defaults.headers.authorization = `Bearer ${token}`;
@@ -50,8 +50,8 @@ export const AuthProvider: React.FC = ({ children }) => {
 
     const { token, user } = response.data;
 
-    localStorage.setItem('@+clinicaSaúde:token', token);
-    localStorage.setItem('@+clinicaSaúde:user', JSON.stringify(user));
+    localStorage.setItem('@+clinicaSaude:token', token);
+    localStorage.setItem('@+clinicaSaude:user', JSON.stringify(user));
 
     api.defaults.headers.authorization = `Bearer ${token}`;
 
@@ -59,15 +59,15 @@ export const AuthProvider: React.FC = ({ children }) => {
   }, []);
 
   const signOut = useCallback(() => {
-    localStorage.removeItem('@+clinicaSaúde:token');
-    localStorage.removeItem('@+clinicaSaúde:user');
+    localStorage.removeItem('@+clinicaSaude:token');
+    localStorage.removeItem('@+clinicaSaude:user');
 
     setData({} as AuthState);
   }, []);
 
   const updateUser = useCallback(
     (user: User) => {
-      localStorage.setItem('@+clinicaSaúde:user', JSON.stringify(user));
+      localStorage.setItem('@+clinicaSaude:user', JSON.stringify(user));
 
       setData({
         token: data.token,
@@ -90,7 +90,7 @@ export function useAuth(): AuthContextData {
   const context = useContext(AuthContext);
 
   if (!context) {
-    throw new Error('UseAuth must be used within an AUthProvider');
+    throw new Error('useAuth must be used within an AuthProvider');
   }
 
   return context;
